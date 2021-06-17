@@ -11,8 +11,8 @@ object Parsers {
 
   val string: P0[String] =
     P.oneOf0(
-      P.charsWhile0(c => c == '`').surroundedBy(P.char('`')) ::
-      P.charsWhile0(c => c == '"').surroundedBy(P.char('"')) ::
+      P.charsWhile0(c => c != '`').surroundedBy(P.char('`')) ::
+      P.charsWhile0(c => c != '"').surroundedBy(P.char('"')) ::
       Nil
     )
 
