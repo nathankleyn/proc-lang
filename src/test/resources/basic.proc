@@ -1,0 +1,68 @@
+/// Definitions
+
+// And are assigned with equals
+// Identifiers start with a colon
+:ident_a = false
+:ident_b = "hello world"
+
+// Types can be inferred or optionally specified
+:ident_c : String = "hello world"
+
+/// Exporting Definitions
+
+// By default identifiers are private to the file they are within
+// Use export to make them public
+export :ident_a, :ident_b
+// Can also use export when defining
+export :export_a = {} => { true }
+
+/// Data Types
+
+/// Functions
+
+// Functions are defined in two parts
+// First part is argument typing
+// Second part is body of function
+// Types for each parameter are mandatory
+:fn_a = { a : Number, b : Boolean } => {
+  // Functions have both implicit and explicit returns in body
+  return true
+  // Implicit returns
+  false
+}
+
+// Call a function with squiggle brackets
+// All args must be named
+// Syntax is deliberately JSON compatible
+fn_a { a: 123, b: false }
+
+/// Structs
+
+// Structs are defined with squiggle brackets
+// Providing the types for fields of a struct is mandatory
+struct :StructA = {
+  a: Number,
+  b: Boolean
+}
+
+// Structs can then be used as the type of a field/parameter elsewhere
+:struct_a = { a : StructA } => { true }
+
+// And constructed with a deliberately JSON compatible syntax
+:struct_b = StructA {
+  a: 123,
+  b: false
+}
+
+/// Booleans
+
+:bool_a = true
+:bool_b = false
+
+/// Strings
+
+:string_a = "hello"
+:string_b = `string with "quotes" inside`
+
+/// Numbers
+:num_a = 123
