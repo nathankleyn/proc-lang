@@ -1,6 +1,6 @@
 package proclang
 
-import cats.parse.{Parser => P, Parser0 => P0}
+import cats.parse.{Numbers, Parser => P, Parser0 => P0}
 
 object Parsers {
   val whitespace: P[Unit] = P.charIn(" \t\r\n").void
@@ -16,5 +16,7 @@ object Parsers {
       Nil
     )
 
-  val primatives: P0[Boolean | String] = P.oneOf0(boolean :: string :: Nil)
+  val number: P[Long] = Numbers.digits.map(_.toLong)
+
+  val primatives: P0[Boolean | String | Long] = P.oneOf0(boolean :: string :: number :: Nil)
 }
