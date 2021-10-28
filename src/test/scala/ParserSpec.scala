@@ -68,13 +68,62 @@ object ParserSpec extends SimpleIOSuite {
     expect(Parsers.number.parseAll("foo").isLeft)
   }
 
-  pureTest("Parsers.primatives: can parse all the primatives with a single parser"){
-    expect(Parsers.primatives.parseAll("true") == Right(true))
-    expect(Parsers.primatives.parseAll("\"foo\"") == Right("foo"))
-    expect(Parsers.primatives.parseAll("123") == Right(123L))
+  pureTest("Parsers.primative: can parse all the primatives with a single parser"){
+    expect(Parsers.primative.parseAll("true") == Right(true))
+    expect(Parsers.primative.parseAll("\"foo\"") == Right("foo"))
+    expect(Parsers.primative.parseAll("123") == Right(123L))
   }
 
-  pureTest("Parsers.primatives: fails if given an incorrect thing to parse"){
-    expect(Parsers.primatives.parseAll("").isLeft)
+  pureTest("Parsers.primative: fails if given an incorrect thing to parse"){
+    expect(Parsers.primative.parseAll("").isLeft)
+  }
+
+  pureTest("Parsers.structKeyValue: can parse a key value pair with whitespace"){
+    expect(Parsers.structKeyValue.parseAll("\"a\" : 1") == Right(("a", 1L)))
+  }
+
+  pureTest("Parsers.structKeyValue: can parse a key value pair with no whitespace"){
+    expect(Parsers.structKeyValue.parseAll("\"a\":1") == Right(("a", 1L)))
+  }
+
+  pureTest("Parsers.struct: can parse an empty struct"){
+    expect(Parsers.struct.parseAll("{}") == Right(Map.empty))
+  }
+
+  pureTest("Parsers.struct: can parse a single pair struct"){
+    expect(Parsers.struct.parseAll("{\"a\" : 1}") == Right(Map("a" -> 1L)))
+  }
+
+  pureTest("Parsers.struct: can parse a multiple pair struct"){
+    expect(Parsers.struct.parseAll("{\"a\" : 1, \"b\": true}") == Right(Map("a" -> 1L, "b" -> true)))
+  }
+
+  pureTest("Parsers.struct: can parse a struct over multiple lines"){
+    expect(Parsers.struct.parseAll("{\n  \"a\" : 1,\n  \"b\": true}") == Right(Map("a" -> 1L, "b" -> true)))
+  }
+
+  pureTest("Parsers.sequence: can parse an empty sequence"){
+    expect(Parsers.sequence.parseAll("[]") == Right(List.empty))
+  }
+
+  pureTest("Parsers.sequence: can parse a single value sequence"){
+    expect(Parsers.sequence.parseAll("[1]") == Right(List(1L)))
+  }
+
+  pureTest("Parsers.sequence: can parse a multiple value sequence"){
+    expect(Parsers.sequence.parseAll("[1, true]") == Right(List(1L, true)))
+  }
+
+  pureTest("Parsers.sequence: can parse a sequence over multiple lines"){
+    expect(Parsers.sequence.parseAll("[\n  1,\n  true]") == Right(List(1L, true)))
+  }
+
+  pureTest("Parsers.collection: can parse all the collections with a single parser"){
+    expect(Parsers.collecton.parseAll("{\"a\" : 1}") == Right(Map("a" -> 1L)))
+    expect(Parsers.collecton.parseAll("[1]") == Right(List(1L)))
+  }
+
+  pureTest("Parsers.collection: fails if given an incorrect thing to parse"){
+    expect(Parsers.collecton.parseAll("").isLeft)
   }
 }
